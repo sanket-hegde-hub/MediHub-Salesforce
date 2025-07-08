@@ -1,0 +1,59 @@
+<template>
+  <div class="slds-box slds-theme_default slds-var-p-around_large">
+
+    <div class="slds-grid slds-wrap slds-gutters">
+      <!-- Patient Name -->
+      <div class="slds-col slds-size_1-of-1">
+        <lightning-input class="patient-name" label="Patient Name" onchange={handlePatientChange}>
+        </lightning-input>
+      </div>
+
+      <!-- Email -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <lightning-input class="patient-email" type="email" label="Email" onchange={handleEmailChange}>
+        </lightning-input>
+      </div>
+
+      <!-- Phone -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <lightning-input class="patient-phone" type="tel" label="Phone" onchange={handlePhoneChange}>
+        </lightning-input>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <lightning-input class="patient-dob" type="date" label="Date of Birth" onchange={handleDobChange}>
+        </lightning-input>
+      </div>
+
+      <!-- Gender -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <lightning-combobox class="gender" label="Gender" options={genderOptions} onchange={handleGenderChange}>
+        </lightning-combobox>
+      </div>
+
+      <!-- Address -->
+      <div class="slds-col slds-size_1-of-1">
+        <lightning-textarea label="Address" onchange={handleAddressChange}></lightning-textarea>
+      </div>
+
+      <!-- Emergency Contact Name -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <lightning-input label="Emergency Contact Name" onchange={handleEmrNameChange}>
+        </lightning-input>
+      </div>
+
+      <!-- Emergency Contact Number -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <lightning-input label="Emergency Contact Number" onchange={handleEmrPhoneChange}>
+        </lightning-input>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="slds-col slds-size_1-of-1 slds-text-align_center slds-var-m-top_large">
+        <lightning-button variant="brand" label="Create Patient" onclick={handleCreatePatient}>
+        </lightning-button>
+      </div>
+    </div>
+  </div>
+</template>

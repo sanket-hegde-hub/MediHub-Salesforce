@@ -1,0 +1,17 @@
+.status-completed {
+    color: green;
+
+}
+
+.status-cancelled {
+    color: red;
+
+}
+
+.no-hover lightning-button:hover,
+.no-hover .slds-button:hover {
+    background-color: inherit !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}

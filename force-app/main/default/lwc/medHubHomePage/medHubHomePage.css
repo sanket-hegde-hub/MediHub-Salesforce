@@ -1,0 +1,81 @@
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content-area {
+  margin-left: 240px;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  width: 100%;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+:host {
+  --teal: #00796b;
+  --light-teal: #e0f2f1;
+}
+
+.header {
+  background-color: var(--teal);
+  color: white;
+  font-weight: bold;
+}
+
+.logo-placeholder {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.app-name {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.sidebar {
+  background-color: var(--light-teal);
+  border-right: 1px solid #ccc;
+  min-height: 90vh;
+  font-weight: bold;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+ 
+}
+
+.menu-item {
+  padding: 12px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #004d40;
+  transition: background 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: var(--teal);
+  color: white;
+}
+
+.profile-name {
+  font-weight: 500;
+}
+
+.full-height {
+  height: 100%;
+}
+

@@ -1,0 +1,98 @@
+<template>
+  <div class="slds-var-p-around_medium slds-text-align_center slds-theme_default">
+    <h1 class="slds-text-heading_large"><strong>Patient Details</strong></h1>
+  </div>
+  <div
+    class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-var-m-around_medium slds-theme_default">
+    <div class="slds-col">
+      <div class="slds-grid slds-grid_vertical-align-center">
+        <lightning-input class="patient-search slds-var-m-right_small" placeholder="Search patient" type="search"
+          variant="label-hidden" onchange={handleSearchInput}>
+        </lightning-input>
+      </div>
+    </div>
+    <div class="slds-col slds-text-align_right">
+      <lightning-button label="Add Patient" variant="brand" onclick={openPatientModal}>
+      </lightning-button>
+      
+    </div>
+  </div>
+
+  <template for:each={patientMap} for:item="patient">
+    <div key={patient.Id} class="slds-box slds-theme_default slds-var-m-bottom_medium slds-var-p-around_medium">
+
+      <div class="slds-grid slds-grid_align-spread slds-var-m-bottom_small">
+        <h3 class="slds-text-heading_small slds-text-color_default"><strong>{patient.Name}</strong></h3>
+        <div class="slds-button-group" role="group">
+          <lightning-button class="slds-var-m-right_small" label="New Appointment" variant="brand"
+            data-patient-id={patient.Id} data-patient-name={patient.Name} onclick={openBookingModal}>
+          </lightning-button>
+          <!-- <lightning-button class="slds-var-m-right_small" label="Medical Record" variant="bare" size="small"
+            data-patient-id={patient.Id} data-patient-name={patient.Name}
+            onclick={openMedicalRecordModal}></lightning-button>
+          <lightning-button class="slds-var-m-right_small" label="Invoice" variant="bare" size="small"
+            data-patient-id={patient.Id} data-patient-name={patient.Name} onclick={openInvoiceModal}></lightning-button> -->
+        </div>
+      </div>
+
+      <div class="slds-grid slds-wrap slds-gutters">
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+          <p class="slds-var-m-bottom_small"><strong>Date of Birth:</strong>
+            <lightning-formatted-date-time value={patient.DOB__c}></lightning-formatted-date-time>
+          </p>
+          <p class="slds-var-m-bottom_small"><strong>Email:</strong> {patient.Email__c}</p>
+          <p class="slds-var-m-bottom_small"><strong>Mobile:</strong> {patient.Mobile__c}</p>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+          <p class="slds-var-m-bottom_small"><strong>Gender:</strong> {patient.Gender__c}</p>
+          <p class="slds-var-m-bottom_small"><strong>Address:</strong> {patient.Address__c}</p>
+          <p class="slds-var-m-bottom_small"><strong>Emergency Contact Name:</strong>
+            {patient.Emergency_contact_name__c}</p>
+          <p class="slds-var-m-bottom_small"><strong>Emergency Contact Number:</strong>
+            {patient.Emergency_contact_number__c}</p>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template if:true={isBookingModalOpen}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 class="slds-modal__title">Book Appointment for {selectedPatientName}</h2>
+        </header>
+        <div class="slds-modal__content slds-var-p-around_medium">
+          <c-appointment-booking patient-id={selectedPatientId} patient-name={selectedPatientName}
+            onclosemodal={closeBookingModal}>
+          </c-appointment-booking>
+        </div>
+        <footer class="slds-modal__footer">
+          <lightning-button variant="base" label="Cancel" onclick={closeBookingModal}>
+            
+          </lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+  <template if:true={isPatientModalOpen}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 class="slds-text-heading_medium slds-text-align_center slds-var-m-bottom_medium">
+            <strong>New Patient Registration</strong>
+          </h2>
+        </header>
+        <div class="slds-modal__content slds-var-p-around_medium">
+          <c-new-patient-screen onclosemodal={closePatientModal} onpatientcreated={handlePatientCreated}>
+          </c-new-patient-screen>
+        </div>
+        <footer class="slds-modal__footer">
+          <lightning-button variant="base" label="Cancel" onclick={closePatientModal}>
+          </lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

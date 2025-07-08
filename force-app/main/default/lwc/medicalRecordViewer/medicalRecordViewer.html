@@ -1,0 +1,9 @@
+<template>
+  <lightning-card title="Medical Records" class="slds-var-p-around_medium">
+    <div class="slds-box slds-theme_info slds-var-p-around_medium">
+      <template for:each={medicalRecords} for:item="rec">
+        <p key={rec.Id} class="slds-text-body_regular slds-m-vertical_x-small">{rec.Date} - {rec.Diagnosis}</p>
+      </template>
+    </div>
+  </lightning-card>
+</template>

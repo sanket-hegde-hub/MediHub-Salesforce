@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Doctors Available Today" icon-name="standard:avatar">
+        <div class="slds-var-p-around_medium">
+            <template if:true={hasDoctors}>
+                <template for:each={shiftGroups} for:item="group">
+                    <div key={group.shift} class="slds-var-m-bottom_medium">
+                        <h3 class="slds-text-heading_small slds-text-color_success">{group.shift}</h3>
+                        <ul class="slds-list_dotted">
+                            <template for:each={group.doctors} for:item="doc">
+                                <li key={doc.Id}>{doc.Name} ({doc.Specialization__c})</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+            </template>
+            <template if:false={hasDoctors}>
+                <p>No doctors are available today.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

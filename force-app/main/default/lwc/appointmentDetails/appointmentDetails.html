@@ -1,0 +1,178 @@
+<template>
+    <!-- Outer scrollable container with fixed height -->
+    <div class="slds-var-p-around_medium" style="min-height: 600px;">
+
+        <!-- <lightning-card title="Appointment Details"> -->
+        <div class="slds-var-p-around_medium slds-text-align_center slds-theme_default">
+            <h1 class="slds-text-heading_large slds-text-color_default"><strong>Appointment Details</strong></h1>
+        </div>
+
+        <template for:each={appointmentMap} for:item="group">
+
+            <div key={group.patientName} class="slds-var-m-bottom_medium slds-box slds-theme_default">
+
+                <!-- Patient Name and Button (Left & Right) -->
+                <div class="slds-grid slds-grid_align-spread slds-var-m-bottom_small slds-var-p-around_small">
+                    <div>
+                        <h3 class="slds-text-heading_small slds-text-color_default">
+                            <strong>{group.patientName}</strong>
+                        </h3>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-var-m-right_small">
+                            <!-- <lightning-button label="Book Appointment" variant="brand" size="small"
+                                data-patient-id={group.patientId} data-patient-name={group.patientName}
+                                onclick={openBookingModal}>
+                            </lightning-button> -->
+                            <lightning-button label="Medical Record" variant="base" size="small"
+                                data-patient-id={group.patientId} data-patient-name={group.patientName}
+                                onclick={openMedicalRecordModal}>
+                            </lightning-button>
+                        </div>
+                        <div class="slds-var-m-right_small">
+                            <!-- <lightning-button label="Patient Detail" variant="bare" size="small"
+                                data-patient-id={group.patientId} data-patient-name={group.patientName}
+                                onclick={openPatientDetail}>
+                            </lightning-button> -->
+                            <lightning-button label="Invoice" variant="base" size="small"
+                                data-patient-id={group.patientId} data-patient-name={group.patientName}
+                                onclick={openInvoiceModal}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_fixed-layout"
+                        style="min-width: 1000px;">
+
+                        <thead class="slds-theme_shade">
+                            <tr class="slds-text-title_caps">
+                                <th>
+                                    <div class="slds-truncate" title="Date">Date</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Time">Time</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Doctor">Doctor</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Reason">Reason</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template if:true={group.appointments.length}>
+                                <template for:each={group.appointments} for:item="appt">
+                                    <tr key={appt.Id}>
+                                        <td>
+                                            <lightning-formatted-date-time value={appt.Appointment_Date__c}
+                                                year="numeric" month="short" day="2-digit" class="slds-truncate">
+                                            </lightning-formatted-date-time>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate">{appt.TimeSlotFormatted}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate">{appt.Doctor__r.Name}</div>
+                                        </td>
+                                        <td><span class={appt.statusClass}>{appt.Status__c}</span></td>
+                                        <td>
+                                            <div class="slds-truncate">{appt.Reason__c}</div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </template>
+                            <template if:false={group.appointments.length}>
+                                <tr>
+                                    <td colspan="5" class="slds-text-align_center">
+                                        No appointments found for this patient.
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+        <!-- </lightning-card> -->
+    </div>
+    <!-- Modal for Booking -->
+    <template if:true={isBookingModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">Book Appointment for {selectedPatientName}</h2>
+                </header>
+                <div class="slds-modal__content slds-var-p-around_medium">
+                    <c-appointment-booking patient-id={selectedPatientId} patient-name={selectedPatientName}
+                        onclosemodal={closeBookingModal}>
+                    </c-appointment-booking>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeBookingModal}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={isPatientModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- Modal Header -->
+                <header class="slds-modal__header slds-theme_info">
+                    <h2 class="slds-modal__title slds-hyphenate slds-text-heading_medium">
+                        Patient Details
+                    </h2>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-var-p-around_large">
+                    <div class="slds-grid slds-wrap slds-gutters">
+
+                        <!-- Column 1 -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <p class="slds-var-m-bottom_small"><strong>Name:</strong> {selectedPatientDetail.Name}</p>
+                            <p class="slds-var-m-bottom_small"><strong>Date of Birth:</strong>
+                                <lightning-formatted-date-time value={selectedPatientDetail.DOB__c}>
+                                </lightning-formatted-date-time>
+                            </p>
+                            <p class="slds-var-m-bottom_small"><strong>Email:</strong> {selectedPatientDetail.Email__c}
+                            </p>
+                            <p class="slds-var-m-bottom_small"><strong>Mobile:</strong>
+                                {selectedPatientDetail.Mobile__c}
+                            </p>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <p class="slds-var-m-bottom_small"><strong>Gender:</strong>
+                                {selectedPatientDetail.Gender__c}</p>
+                            <p class="slds-var-m-bottom_small"><strong>Address:</strong>
+                                {selectedPatientDetail.Address__c}</p>
+                            <p class="slds-var-m-bottom_small"><strong>Emergency Contact Name:</strong>
+                                {selectedPatientDetail.Emergency_contact_name__c}</p>
+                            <p class="slds-var-m-bottom_small"><strong>Emergency Contact Number:</strong>
+                                {selectedPatientDetail.Emergency_contact_number__c}</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer slds-theme_default">
+                    <lightning-button label="Close" onclick={closePatientModal}></lightning-button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

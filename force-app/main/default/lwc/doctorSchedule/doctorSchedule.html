@@ -1,0 +1,9 @@
+<template>
+  <lightning-card title="Doctor Schedule" class="slds-var-p-around_medium">
+    <div class="slds-box slds-box_xx-small slds-theme_alert-texture">
+      <template for:each={appointments} for:item="appt">
+        <p key={appt.Id} class="slds-text-body_regular slds-var-m-vertical_x-small">{appt.Date} - {appt.PatientName}</p>
+      </template>
+    </div>
+  </lightning-card>
+</template>
